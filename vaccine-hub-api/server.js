@@ -6,14 +6,17 @@ const { PORT } = require("./config");
 const { BadRequestError, NotFoundError } = require("./utils/errors");
 
 const app = express();
-const authRoutes = require("./routes/auth")
+
+const authRoutes = require("./routes/auth");
 //enables Cross-Origin Resource Sharing on all origins that may not be on port
 app.use(cors());
 //parse incoming request bodies
 app.use(express.json());
 //Log request in console
 app.use(morgan("tiny"));
-app.use("/auth", authRoutes)
+
+app.use("/auth", authRoutes);
+
 app.use((res, req, next) => {
   return next(new NotFoundError());
 });

@@ -4,7 +4,10 @@
 
 DROP DATABSE  vaccine_hub;
 CREATE DATABASE vaccine_hub;
+-- Hooks up to a certain databas
 \connect vaccine_hub;
 
 -- executes sql from file and creates table with schema
+-- all sqls end in ";"
+-- Can have multiple \i statements
 \i vaccine-hub-schema.sql
