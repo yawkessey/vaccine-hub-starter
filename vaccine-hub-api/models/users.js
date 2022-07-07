@@ -4,11 +4,40 @@ const { BCRYPT_WORK_FACTOR } = require("../config");
 const bcrypt = require("bcrypt");
 
 class User {
+  static async makePublicUser(user) {
+    return {
+      id: user.id,
+      email: user.email,
+      location: user.location,
+      first_name: user.first_name,
+      last_name: user.last_name,
+    };
+  }
+
   static async login(credentials) {
     //User submits email and password
     //throw error if both fields are not filled
     //Check if user exists by email
     //If user found check if password matches from db
+
+    const requiredFields = ["password", "email"];
+    console.log(credentials);
+
+    requiredFields.forEach((field) => {
+      if (!credentials.hasOwnProperty(field)) {
+        throw new BadRequestError(`Missing ${field} in request body`);
+      }
+    });
+
+    const user = await User.fetchUserByEmail(credentials.email);
+
+    if (user) {
+      const isValid = await bcrypt.compare(credentials.password, user.password);
+      if (isValid) {
+        return User.makePublicUser(user);
+      }
+    }
+    throw new UnauthorizedError("Invalid email/password combination");
   }
 
   static async register(credentials) {
@@ -80,7 +109,7 @@ class User {
 
     const user = result.rows[0];
 
-    return user;
+    return User.makePublicUser(user);
   }
 
   // Looks up user in database by email

@@ -3,14 +3,14 @@ const { restart } = require("nodemon");
 const router = express.Router();
 const User = require("../models/users");
 
-
 router.post("/login", async (req, res, next) => {
   try {
     //Take users email and password and authenticate them
     const user = await User.login(req.body);
     return res.status(200).json({ user });
   } catch (error) {
-    next(error);
+    console.log(error);
+    return next(error);
   }
 });
 
