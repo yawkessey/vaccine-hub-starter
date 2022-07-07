@@ -3,6 +3,7 @@ const { restart } = require("nodemon");
 const router = express.Router();
 const User = require("../models/users");
 
+
 router.post("/login", async (req, res, next) => {
   try {
     //Take users email and password and authenticate them

@@ -1,5 +1,7 @@
 const { UnauthorizedError, BadRequestError } = require("../utils/errors");
 const db = require("../db");
+const { BCRYPT_WORK_FACTOR } = require("../config");
+const bcrypt = require("bcrypt");
 
 class User {
   static async login(credentials) {
@@ -27,9 +29,9 @@ class User {
       }
     });
 
-    // if (credentials.email.indexOf("@") <= 0) {
-    //   throw new BadRequestError("Invalid email");
-    // }
+    if (credentials.email.indexOf("@") <= 0) {
+      throw new BadRequestError("Invalid email");
+    }
     //check if user exists by email
     //if user found throw error
     const existingUser = await User.fetchUserByEmail(credentials.email);
@@ -39,6 +41,10 @@ class User {
 
     //take user password and encrypt it/hash it
     //take email and lowercase it
+    const hashedPassword = await bcrypt.hash(
+      credentials.password,
+      BCRYPT_WORK_FACTOR
+    );
     const lowercasedEmail = credentials.email.toLowerCase();
 
     const result = await db.query(
@@ -64,7 +70,7 @@ class User {
     
     `,
       [
-        credentials.password,
+        hashedPassword,
         credentials.first_name,
         credentials.last_name,
         credentials.email,
