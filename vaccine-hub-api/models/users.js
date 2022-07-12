@@ -15,10 +15,6 @@ class User {
   }
 
   static async login(credentials) {
-    //User submits email and password
-    //throw error if both fields are not filled
-    //Check if user exists by email
-    //If user found check if password matches from db
 
     const requiredFields = ["password", "email"];
     console.log(credentials);

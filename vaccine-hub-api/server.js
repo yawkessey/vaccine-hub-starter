@@ -8,6 +8,7 @@ const { BadRequestError, NotFoundError } = require("./utils/errors");
 const app = express();
 
 const authRoutes = require("./routes/auth");
+
 //enables Cross-Origin Resource Sharing on all origins that may not be on port
 app.use(cors());
 //parse incoming request bodies

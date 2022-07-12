@@ -8,3 +8,4 @@ CREATE TABLE users (
     location        TEXT NOT NULL,
     date            TIMESTAMP NOT NULL DEFAULT NOW()
 );
+
